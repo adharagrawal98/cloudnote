@@ -33,8 +33,8 @@ const Navbar = () => {
                         </ul>
 
                         <form className="d-flex"  style={{ marginLeft: "auto" }} role="search">
-                            <input className="form-control me-2" id="search" type="search" placeholder="Search" aria-label="Search" />
-                            <button className="btn btn-outline-success" type="submit">Search</button>
+                        <Link type="button" className="btn btn-light mx-1 btn-sm" to='/login'>Log In</Link>
+                        <Link type="button" className="btn btn-light mx-1 btn-sm" to='/signup'>Sign Up</Link>
                         </form>
                     </div>
                 </div>

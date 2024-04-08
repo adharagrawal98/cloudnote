@@ -6,6 +6,8 @@ import Home from './components/Home';
 import About from './components/About';
 import NoteState from './context/notes/NoteState';
 import Alert from './components/Alert';
+import Login from './components/Login';
+import Signup from './components/Signup';
 
 function App() {
   return (
@@ -13,13 +15,14 @@ function App() {
       <NoteState>
         <Router>
           <Navbar />
-          <Alert message="are you sure you want to delete this note?" />
+          <Alert message="Are you sure you want to delete this note?" />
           <div className="container">
             <Routes>
-              {/* Home Route */}
-              <Route exact path="/home" element={<Home />} />
-              {/* About Route */}
+              {/* Wrap each route with Route component */}
+              <Route exact path="/Home" element={<Home />} />
               <Route exact path="/about" element={<About />} />
+              <Route exact path="/Login" element={<Login />} />
+              <Route exact path="/Signup" element={<Signup />} />
             </Routes>
           </div>
         </Router>

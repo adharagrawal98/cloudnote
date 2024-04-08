@@ -14,10 +14,11 @@ router.post('/createuser',[
     body('email', 'Enter a valid email').isEmail(),
     body('password', 'Password must be at least 5 characters').isLength({ min:5}),
 ], async (req, res) => {
+    let success = false;
     // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array()});
+        return res.status(400).json({ success, errors: errors.array()});
     }
 
     try {
@@ -50,7 +51,7 @@ router.post('/createuser',[
     }
 });
 
-//`Route 2: Authenticate a User using: POST "/api/auth/login". No login required
+//`Route 2: Authenticate a User using: POST "/api/auth/login". 
 router.post('/login',[
     body('email', 'Enter a valid email').isEmail(),
     body('password', 'Password must be at least 5 characters').exists(),
@@ -60,13 +61,15 @@ router.post('/login',[
         // Find the user by email
         let user = await User.findOne({email});
         if (!user) {
-            return res.status(400).json({ error: "User with this email does not exist" });
+            success=false;
+            return res.status(400).json({ success, error: "User with this email does not exist" });
         }
 
         // Compare passwords
         const isMatch = await bcrypt.compare(password, user.password);
-        if (isMatch) {
-            return res.status(400).json({ error: "Invalid credentials" });
+        if (!isMatch) {
+            success=false;
+            return res.status(400).json({ success, error: "Invalid credentials" });
         }
 
         // Generate JWT token
@@ -76,9 +79,10 @@ router.post('/login',[
             }
         };
         const authToken = jsonwebtoken.sign(payload, JWT_SECRET);
+        success=true;
 
         // Send a response with authentication token
-        res.json({ authToken });
+        res.json({ success,authToken });
     } catch(error) {
         console.error('Error logging in:', error);
         res.status(500).json({ message: 'Internal server error' });
