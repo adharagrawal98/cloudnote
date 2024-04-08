@@ -3,7 +3,7 @@ const User = require('../models/Users');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
-const jsonwebtoken = require('jsonwebtoken');
+var jsonwebtoken = require('jsonwebtoken');
 var fetchUser = require('../middleware/fetchUser');
 
 const JWT_SECRET = 'Adharisagoodboy';
@@ -56,6 +56,15 @@ router.post('/login',[
     body('email', 'Enter a valid email').isEmail(),
     body('password', 'Password must be at least 5 characters').exists(),
 ], async (req, res) => {
+
+
+    let success = false;
+  // If there are errors, return Bad request and the errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  
     const {email,password} = req.body;
     try {
         // Find the user by email

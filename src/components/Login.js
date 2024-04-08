@@ -16,7 +16,7 @@ const Login = (props) => {
         });
         const json = await response.json();
         console.log(response.status ,json);
-        if (response.status === 200) {
+        if (json.success) {
             // Login successful
             localStorage.setItem('token', json.authtoken); 
             navigate("/Home");
