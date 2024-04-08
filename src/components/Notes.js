@@ -47,14 +47,14 @@ const Notes = () => {
                         </div>
                         <div className="modal-body">
 
-                            <form className="my-3">
+                            <form className="my-3" onSubmit={handleClick}>
                                 <div className="mb-3">
                                     <label htmlFor="title" className="form-label">Title</label>
                                     <input type="text" className="form-control" id="etitle" value={note.etitle} name="etitle" aria-describedby="emailHelp" onChange={onChange} minLength={5} required />
                                     <div id="emailHelp" className="form-text"></div>
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="tag" className="form-label">Tag</label> minLength={5} required
+                                    <label htmlFor="tag" className="form-label" minLength={5} required>Tag</label> 
                                     <input type="text" className="form-control" value={note.etag} id="etag" name="etag" onChange={onChange} minLength={5} required />
                                 </div>
                                 <div className="mb-3">
@@ -65,7 +65,7 @@ const Notes = () => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" ref={refClose} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" disabled={note.etitle.length<5||note.edescription.length<5} onSubmit={handleClick} className="btn btn-primary">Save changes</button>
+                            <button type="button" disabled={note.etitle.length<5||note.edescription.length<5} onClick={handleClick} className="btn btn-primary">Save changes</button>
                         </div>
                     </div>
                 </div>

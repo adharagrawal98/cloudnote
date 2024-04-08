@@ -67,6 +67,7 @@ const NoteState = (props) => {
     });
     // eslint-disable-next-line
     const json = await response.json(); 
+    console.log(json);
    
 
      let newNotes = JSON.parse(JSON.stringify(notes))
