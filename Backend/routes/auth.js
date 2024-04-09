@@ -51,52 +51,48 @@ router.post('/createuser',[
     }
 });
 
-//`Route 2: Authenticate a User using: POST "/api/auth/login". 
-router.post('/login',[
+router.post('/login', [
     body('email', 'Enter a valid email').isEmail(),
     body('password', 'Password must be at least 5 characters').exists(),
-], async (req, res) => {
-
-
+  ], async (req, res) => {
     let success = false;
-  // If there are errors, return Bad request and the errors
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  
-    const {email,password} = req.body;
-    try {
-        // Find the user by email
-        let user = await User.findOne({email});
-        if (!user) {
-            success=false;
-            return res.status(400).json({ success, error: "User with this email does not exist" });
-        }
-
-        // Compare passwords
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            success=false;
-            return res.status(400).json({ success, error: "Invalid credentials" });
-        }
-
-        // Generate JWT token
-        const payload = {
-            user: {
-                id: user.id
-            }
-        };
-        const authToken = jsonwebtoken.sign(payload, JWT_SECRET);
-        success=true;
-
-        // Send a response with authentication token
-        res.json({ success,authToken });
-    } catch(error) {
-        console.error('Error logging in:', error);
-        res.status(500).json({ message: 'Internal server error' });
+    // If there are errors, return Bad request and the errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success, errors: errors.array() });
     }
-});
+  
+    const { email, password } = req.body;
+    try {
+      // Find the user by email
+      let user = await User.findOne({ email });
+      if (!user) {
+        return res.status(400).json({ success, error: "User with this email does not exist" });
+      }
+  
+      // Compare passwords
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ success, error: "Invalid credentials" });
+      }
+  
+      // Generate JWT token
+      const payload = {
+        user: {
+          id: user.id
+        }
+      };
+      const authToken = jsonwebtoken.sign(payload, JWT_SECRET);
+      success = true;
+  
+      // Send a response with authentication token
+      res.json({ success, authToken });
+    } catch (error) {
+      console.error('Error logging in:', error);
+      res.status(500).json({ success, message: 'Internal server error' });
+    }
+  });
+  
 
 
 //`Route 3: Get looged in User Details using: POST "/api/auth/getuser". login required.

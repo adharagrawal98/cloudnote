@@ -20,12 +20,13 @@ const Login = (props) => {
             // Login successful
             localStorage.setItem('token', json.authtoken); 
             navigate("/Home");
+            props.showAlert("Logged In", "success");
         } else if (response.status === 401) {
             // Unauthorized - invalid credentials
-            alert("Invalid email or password");
+            props.showAlert("Invalid email or password","warning");
         } else {
             // Handle other error cases
-            alert("An error occurred. Please try again later.");
+            props.showAlert("Invalid email or password","warning");
         }
     };
     
@@ -35,8 +36,9 @@ const Login = (props) => {
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
+        <>
+            <div class="container my-3">
+            <form onSubmit={handleSubmit} >
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email address</label>
                     <input type="email" className="form-control" value={credentials.email} onChange={onChange} id="email" name="email" aria-describedby="emailHelp" />
@@ -49,8 +51,9 @@ const Login = (props) => {
 
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>
-        </div>
+            </div>
+        </>
     )
-}
+    };
 
 export default Login;
